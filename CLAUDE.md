@@ -1,126 +1,87 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code and other agents working in this repository. `AGENTS.md`
+is a symlink to this file.
 
 ## Project Overview
 
-Super-opinionated Bun/TypeScript stack for fast development. Uses `bun` as runtime and package manager.
-**Before any other work in this repo, enable prek:** `bun add -g prek && prek install`. Hooks are defined in `prek.toml`.
+The public MCP server for [Sealgate](https://sealgate.ai), an AI
+data-leak-prevention platform (a security gateway and data firewall for AI
+agents). The server is a **thin MCP proxy**: it forwards tool calls to an
+organisation's own Sealgate gateway. There is no fixed public gateway, so the
+gateway URL and API key are supplied by the user through `SEALGATE_GATEWAY_URL`
+and `SEALGATE_API_KEY`. Never hardcode or fabricate a gateway URL or key. Tools
+must fail gracefully (return an error result) when the env is unset, never throw
+at startup, so registry probes and `--help` do not crash.
 
 ## Common Commands
 
 ```bash
-# Onboarding & Setup
-make onboard        # Interactive onboarding CLI (rename, deps, env, hooks, media)
-make setup          # Install dependencies (bun install)
-make all            # Install deps and run main application
-make dev            # Run in watch mode
-
-# Testing
-make test           # Run all tests (bun test)
-make test_fast      # Run fast tests (5s timeout)
-make test_watch     # Run tests in watch mode
-
-# Code Quality (run after major changes)
-make fmt            # Format code with Biome (auto-fix)
-make lint           # Run Biome linter (check only)
-make deadcode       # Find dead code + unused deps with knip
-make typecheck      # Run TypeScript type checker (tsc --noEmit)
-make lint_links     # Check for broken links in markdown files
-make ci             # Run all CI checks (lint, deadcode, typecheck, lint_links)
-
-# Dependencies
-bun install         # Install dependencies
-bun add <pkg>       # Add new dependency
-bun add -d <pkg>    # Add dev dependency
-bun run src/index.ts # Run TypeScript files
+bun install                 # Install dependencies
+bun run src/index.ts        # Run the server over stdio (add --help for usage)
+bun run dev                 # Run in watch mode
+bun run build               # Bundle to dist/
+bun test                    # Run tests
+make ci                     # All checks: lint, deadcode, typecheck, tech-debt,
+                            #   duplicate-code, import boundaries, links,
+                            #   AI-writing, Claude/Codex sync
+make fmt                    # Auto-fix formatting with Biome
 ```
 
 ## Architecture
 
-- **src/** - Source code (entrypoint: `src/index.ts`)
-- **tests/** - Test files (bun test)
-- **docs/** - Documentation site (Next.js/Fumadocs, separate dependency tree)
-- **frontend/** - Frontend app (Vite/React, separate dependency tree)
+- `src/index.ts` - entrypoint. Handles `--help`/`--version`, picks the transport
+  (stdio by default; streamable HTTP when `SEALGATE_MCP_TRANSPORT=http`).
+- `src/server.ts` - builds the `McpServer` and registers the tools.
+- `src/config.ts` - validates the two env vars with zod; returns a result rather
+  than throwing.
+- `src/gateway.ts` - fetch wrapper that calls the configured Sealgate gateway
+  with Bearer auth.
+- `src/tools/` - one file per proxy tool (`list_mcp_servers`,
+  `get_session_status`, `check_policy`); `helpers.ts` holds the shared
+  config-check and result-marshalling logic.
+- `test/` - bun test suite; drives the server through an in-memory MCP client.
+
+Registry and discovery manifests live at the repo root and are the reason this
+repo is public: `server.json` (official MCP registry), `smithery.yaml`
+(Smithery), `mcp.json` (Agent Plugins), `.well-known/mcp/server-card.json`, and
+the `skills/` skill.
 
 ## Code Style
 
-- camelCase for functions/variables
-- PascalCase for classes/types/interfaces
-- UPPER_CASE for constants
-- kebab-case for file names
-- 4-space indentation, double quotes (enforced by Biome)
+- 4-space indentation, double quotes, enforced by Biome (`biome.json`).
+- camelCase for functions/variables, PascalCase for types, kebab-case for file
+  names.
+- No em dashes anywhere; the AI-writing check (`make check_ai_writing`) fails on
+  them.
 
 ## Configuration Pattern
 
-Use environment variables via `process.env` for secrets and config. For structured config, import JSON or use a typed config object:
+Runtime configuration is exactly two environment variables read and validated in
+`src/config.ts` with zod:
 
-```typescript
-// .env (git-ignored)
-DATABASE_URL=...
-API_KEY=...
-
-// Access in code
-const apiKey = process.env.API_KEY;
+```bash
+# .env (git-ignored; see .env.example)
+SEALGATE_GATEWAY_URL=https://your-org.gateway.sealgate.ai
+SEALGATE_API_KEY=your-sealgate-api-key
 ```
 
-## Testing Pattern
-
-```typescript
-import { describe, test, expect } from "bun:test";
-
-describe("MyFeature", () => {
-    test("should do something", () => {
-        expect(true).toBe(true);
-    });
-});
-```
-
-## Commit Message Convention
-
-Use emoji prefixes indicating change type and magnitude (multiple emojis = 5+ files):
-- 🏗️ initial implementation
-- 🔨 feature changes
-- 🐛 bugfix
-- ✨ formatting/linting only
-- ✅ feature complete with E2E tests
-- ⚙️ config changes
-- 💽 DB schema/migrations
-
-## Post-Change Checks
-
-After major changes, always run `make ci` and fix any issues before committing. If `make ci` is too slow for iterative work, run at minimum:
-- `make fmt` (auto-fix formatting)
-- `make lint` (check for errors)
-- `make typecheck` (verify types)
-
-## Subagents
-
-- Folder-size CI failure → spawn subagent `.claude/agents/folder-refactor-advisor.md`.
-
-## Skills & Codex sync
-
-This repo is dual-tool (Claude Code + Codex CLI). Shared skills live in
-`.agents/skills/<name>/SKILL.md` and are symlinked into `.claude/skills/`;
-Claude-only skills (e.g. `thermo-nuclear-code-quality-review`) stay real dirs
-under `.claude/skills/`. Subagents are authored in `.claude/agents/<name>.md`
-and `.codex/agents/<name>.toml` is generated. After any change under
-`.claude/skills`, `.claude/agents`, `.agents/skills`, or `.codex/agents`, run
-`make sync-agent-config` (prek `--check` blocks drifted commits). See the
-`manage-agent-config` skill and `.claude/rules/codex-claude-sync.md`.
+`loadConfig()` returns a discriminated result (`{ ok: true, config }` or
+`{ ok: false, message }`) so callers can surface a clear message instead of
+crashing when the environment is not set.
 
 ## Git Workflow
-- **Protected Branch**: `main` is protected. Do not push directly to `main`. Use PRs.
-- **Merge Strategy**: Squash and merge.
-- **Pre-commit CI gate**: Always run make ci before committing any changes. Ensure it passes with zero errors. Do not commit if make ci fails - fix all issues first, then commit.
-- **Never force push**: Do not use `git push --force` or `--force-with-lease`. If you hit a git issue, stop and ask the user for guidance.
 
----
+- `main` is protected. Do not push directly to `main`; use a feature branch.
+- Never force-push. If git gets into a bad state, stop and ask.
+- Run `make ci` before committing and fix issues rather than weakening checks.
 
-## Automated Translation (Jules Sync)
+## Skills and Codex sync
 
-Docs under `docs/content/` are auto-translated by the **Jules Translation Sync**
-workflow. Do NOT manually translate doc files - edit the English source and the
-workflow will update all locales (`es`, `ja`, `zh`).
-See [`docs/translation-guide.md`](docs/translation-guide.md) for the full
-glossary, file naming conventions, and translation rules.
+This repo is dual-tool (Claude Code + Codex CLI). Shared skills live under
+`.agents/skills/<name>/SKILL.md` and are symlinked into `.claude/skills/`;
+subagents are authored in `.claude/agents/<name>.md` and `.codex/agents/*.toml`
+is generated. After any change under those directories, run
+`make sync-agent-config` (the prek `--check` hook blocks drifted commits). The
+top-level `skills/` directory is the separate skills.sh distribution skill and is
+not part of that sync.

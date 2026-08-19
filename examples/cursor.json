@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "sealgate": {
+            "command": "npx",
+            "args": ["-y", "sealgate-mcp"],
+            "env": {
+                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_API_KEY": "your-sealgate-api-key"
+            }
+        }
+    }
+}

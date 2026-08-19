@@ -1,0 +1,38 @@
+{
+    "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+    "name": "io.github.edison-watch/sealgate-mcp",
+    "title": "Sealgate",
+    "description": "Thin MCP proxy to your organisation's Sealgate AI security gateway and data firewall: list governed MCP servers, review session and audit status, and evaluate tool calls against policy.",
+    "version": "0.1.0",
+    "repository": {
+        "url": "https://github.com/Edison-Watch/sealgate-mcp",
+        "source": "github"
+    },
+    "websiteUrl": "https://sealgate.ai",
+    "packages": [
+        {
+            "registryType": "npm",
+            "registryBaseUrl": "https://registry.npmjs.org",
+            "identifier": "sealgate-mcp",
+            "version": "0.1.0",
+            "runtimeHint": "npx",
+            "transport": {
+                "type": "stdio"
+            },
+            "environmentVariables": [
+                {
+                    "name": "SEALGATE_GATEWAY_URL",
+                    "description": "Base URL of your organisation's Sealgate MCP gateway.",
+                    "isRequired": true,
+                    "isSecret": false
+                },
+                {
+                    "name": "SEALGATE_API_KEY",
+                    "description": "Sealgate API key issued from your dashboard.",
+                    "isRequired": true,
+                    "isSecret": true
+                }
+            ]
+        }
+    ]
+}

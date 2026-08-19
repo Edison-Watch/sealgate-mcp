@@ -1,102 +1,111 @@
-# bun-template
+# Sealgate MCP Server
 
-<p align="center">
-  <img src="media/banner.png" alt="Bun-Template" width="400">
-</p>
+[![MCP](https://img.shields.io/badge/protocol-MCP-blue)](https://modelcontextprotocol.io)
+[![npm](https://img.shields.io/npm/v/sealgate-mcp)](https://www.npmjs.com/package/sealgate-mcp)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-<p align="center">
-<b>🥟 Agent-ergonomic opinionated Bun template</b>
-</p>
+The Model Context Protocol (MCP) server for [Sealgate](https://sealgate.ai),
+the AI data-leak-prevention platform: a security gateway and data firewall that
+sits between AI agents (Claude, ChatGPT, Cursor, Copilot) and your organisation's
+data and tools.
 
-<p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#quick-start">Quick Start</a> •
-  <a href="#configuration">Configuration</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#about-the-core-contributors">About the Core Contributors</a>
-</p>
+This server is a thin MCP proxy. It forwards a small set of tool calls to **your
+organisation's own Sealgate gateway**, which you configure with two environment
+variables. There is no shared public Sealgate endpoint: every organisation runs
+its own gateway, so you supply the URL and key.
 
-<p align="center">
-  <img alt="Project Version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FMiyamura80%2FBun-Template%2Fmain%2Fpackage.json&query=%24.version&label=version&color=blue">
-  <img alt="Bun" src="https://img.shields.io/badge/runtime-bun-f9f1e1?logo=bun">
-  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Miyamura80/Bun-Template">
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Miyamura80/Bun-Template/ci_checks.yaml?branch=main">
-</p>
+## Tools
 
----
-
-<p align="center">
-  <img src="media/demo.gif" alt="Bun-Template Demo" width="600">
-</p>
-
-## Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Bun runtime** | Fast TypeScript execution and package management |
-| **Zod config** | YAML + env var config with Zod schema validation |
-| **Biome** | Linting and formatting |
-| **knip** | Dead code and unused dependency detection |
-| **dependency-cruiser** | Module boundary enforcement |
-| **jscpd** | Duplicate code detection |
-| **prek** | Pre-commit hooks |
-| **Fumadocs** | Documentation site (Next.js) |
-| **Vite + React** | Frontend app |
-
-## Quick Start
-
-```bash
-# Interactive onboarding
-make onboard
-
-# Install dependencies and run
-make all
-
-# Format code
-make fmt
-
-# Run tests
-make test
-
-# Run all CI checks (lint, deadcode, typecheck, etc.)
-make ci
-```
+| Tool | What it does |
+|------|--------------|
+| `list_mcp_servers` | List the MCP servers governed by your Sealgate gateway, with access-control classification and connection status. |
+| `get_session_status` | Review recent agent sessions and audit events: what agents did, which data flowed, and any blocked actions. |
+| `check_policy` | Evaluate a proposed tool call against your Sealgate policy engine and return the deterministic decision (allow, block, or review) with the matching rule. |
 
 ## Configuration
 
-Config is loaded from YAML with environment variable overrides:
+Set two environment variables, both issued or hosted by your organisation:
 
-```typescript
-import { globalConfig } from "@/config";
+| Variable | Description |
+|----------|-------------|
+| `SEALGATE_GATEWAY_URL` | Base URL of your Sealgate MCP gateway. |
+| `SEALGATE_API_KEY` | Sealgate API key from your dashboard. |
 
-// Access config values from src/config/global-config.yaml
-globalConfig.exampleParent.exampleChild;
+If either is unset, every tool returns a clear configuration message instead of
+failing, so registry probes and `--help` never crash.
 
-// Access secrets from .env
-globalConfig.openaiApiKey;
+## Install
 
-// Feature flags (overridable via FEATURES__FLAG_NAME=true)
-globalConfig.features.newUi;
+Add the server to your MCP client. It runs over stdio via `npx`.
+
+### Claude Desktop, Cursor
+
+```json
+{
+    "mcpServers": {
+        "sealgate": {
+            "command": "npx",
+            "args": ["-y", "sealgate-mcp"],
+            "env": {
+                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_API_KEY": "your-sealgate-api-key"
+            }
+        }
+    }
+}
 ```
 
-**Precedence** (highest to lowest):
-1. Environment variables (with `__` for nesting, e.g. `DEFAULT_LLM__DEFAULT_MAX_TOKENS=50000`)
-2. `.global-config.yaml` (local override, git-ignored)
-3. `src/config/production-config.yaml` (if `DEV_ENV=prod`)
-4. `src/config/global-config.yaml` (base config)
+### VS Code
 
-## Credits
+```json
+{
+    "servers": {
+        "sealgate": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "sealgate-mcp"],
+            "env": {
+                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_API_KEY": "your-sealgate-api-key"
+            }
+        }
+    }
+}
+```
 
-- [Bun](https://bun.sh) - JavaScript runtime and package manager
-- [Biome](https://biomejs.dev) - Linter and formatter
-- [Zod](https://zod.dev) - TypeScript schema validation
-- [prek](https://github.com/j178/prek) - Pre-commit hook framework
-- [Fumadocs](https://fumadocs.dev) - Documentation framework
+Copy-paste configs also live in [`examples/`](examples/).
 
-## About the Core Contributors
+## Usage
 
-<a href="https://github.com/Miyamura80/Bun-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Miyamura80/Bun-Template" />
-</a>
+```bash
+# Run over stdio (default transport)
+npx -y sealgate-mcp
 
-Made with [contrib.rocks](https://contrib.rocks).
+# Show usage
+npx -y sealgate-mcp --help
+```
+
+Set `SEALGATE_MCP_TRANSPORT=http` (with an optional `PORT`, default 3000) to
+serve streamable HTTP instead of stdio.
+
+## Develop
+
+Requires [Bun](https://bun.sh).
+
+```bash
+bun install
+bun run src/index.ts --help   # run from source
+bun test                      # run tests
+bun run build                 # bundle to dist/
+make ci                       # lint, typecheck, dead-code, and the rest
+```
+
+## Links
+
+- Website: https://sealgate.ai
+- Docs: https://docs.sealgate.ai
+- Contact: hello@sealgate.ai
+
+## License
+
+MIT. Copyright GPU-EVM LTD (Sealgate). See [LICENSE](LICENSE).

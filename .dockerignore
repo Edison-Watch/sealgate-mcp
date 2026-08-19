@@ -1,0 +1,16 @@
+node_modules
+dist
+.git
+.github
+.claude
+.agents
+.codex
+.cursor
+test
+examples
+docs
+*.md
+!README.md
+.env
+.env.*
+!.env.example
