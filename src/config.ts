@@ -2,10 +2,10 @@ import { z } from "zod";
 
 /**
  * Sealgate MCP is a thin client for the Sealgate Management REST API (the
- * control plane at e.g. https://dashboard.sealgate.ai). It does not host a
- * fixed public endpoint: each organisation points at its own Sealgate host, so
- * the base URL and API key are supplied by the user through environment
- * variables.
+ * control plane at e.g. https://dashboard.sealgate.ai). The bridge is
+ * host-agnostic: managed users point at Sealgate's release hosts, while demo and
+ * self-hosted orgs point at their own, so the base URL and API key are supplied
+ * by the user through environment variables.
  */
 export const configSchema = z.object({
     gatewayUrl: z.url(),

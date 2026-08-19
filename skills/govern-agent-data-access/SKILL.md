@@ -17,9 +17,9 @@ The server needs two environment variables, supplied by your organisation:
 - `SEALGATE_GATEWAY_URL` - base URL of your Sealgate MCP gateway.
 - `SEALGATE_API_KEY` - a Sealgate API key issued from your dashboard.
 
-There is no shared public gateway; each organisation runs its own. If either
-variable is unset, every tool returns a clear configuration message instead of
-failing.
+Sealgate runs a managed release gateway, and demo or self-hosted orgs run their
+own, so this bridge stays host-agnostic. If either variable is unset, every tool
+returns a clear configuration message instead of failing.
 
 Install for an MCP client (for example, Claude Desktop or Cursor):
 

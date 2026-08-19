@@ -9,10 +9,11 @@ the AI data-leak-prevention platform: a security gateway and data firewall that
 sits between AI agents (Claude, ChatGPT, Cursor, Copilot) and your organisation's
 data and tools.
 
-This server is a thin MCP proxy. It forwards a small set of tool calls to **your
-organisation's own Sealgate gateway**, which you configure with two environment
-variables. There is no shared public Sealgate endpoint: every organisation runs
-its own gateway, so you supply the URL and key.
+This server is a thin MCP proxy. It forwards a small set of tool calls to a
+**Sealgate gateway**, which you configure with two environment variables.
+Sealgate runs managed release hosts (the remote MCP gateway at `mcp.sealgate.ai`
+and the Management API at `dashboard.sealgate.ai`), and demo or self-hosted orgs
+run their own, so this bridge stays host-agnostic: you supply the URL and key.
 
 ## Tools
 

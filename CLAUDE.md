@@ -7,12 +7,15 @@ is a symlink to this file.
 
 The public MCP server for [Sealgate](https://sealgate.ai), an AI
 data-leak-prevention platform (a security gateway and data firewall for AI
-agents). The server is a **thin MCP proxy**: it forwards tool calls to an
-organisation's own Sealgate gateway. There is no fixed public gateway, so the
-gateway URL and API key are supplied by the user through `SEALGATE_GATEWAY_URL`
-and `SEALGATE_API_KEY`. Never hardcode or fabricate a gateway URL or key. Tools
-must fail gracefully (return an error result) when the env is unset, never throw
-at startup, so registry probes and `--help` do not crash.
+agents). The server is a **thin MCP proxy**: it forwards tool calls to a Sealgate
+gateway. Sealgate runs managed release hosts (the remote MCP gateway at
+`mcp.sealgate.ai`, advertised in the discovery manifests, and the Management API
+at `dashboard.sealgate.ai`), but demo and self-hosted orgs run their own, so this
+package stays host-agnostic: the gateway URL and API key are supplied by the user
+through `SEALGATE_GATEWAY_URL` and `SEALGATE_API_KEY`. Never hardcode or fabricate
+a gateway URL or key in the package code. Tools must fail gracefully (return an
+error result) when the env is unset, never throw at startup, so registry probes
+and `--help` do not crash.
 
 ## Common Commands
 
