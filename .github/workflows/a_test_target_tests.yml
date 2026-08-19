@@ -1,0 +1,41 @@
+name: Run Target Tests
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - '.github/workflows/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+      environment:
+        description: 'Environment to run tests in'
+        required: false
+        default: 'staging'
+
+jobs:
+  target_tests:
+    if: github.event_name == 'pull_request' || github.event.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        submodules: 'recursive'
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout submodules
+      run: |
+        git submodule init
+        git submodule update
+    - uses: oven-sh/setup-bun@v2
+    - name: Install dependencies
+      run: bun install
+    - name: Run tests
+      run: bun test

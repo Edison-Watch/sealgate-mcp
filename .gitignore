@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+
+old_scripts/
+
+# Agent session files
+session-*.md
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out/
+
+# GIF generation (Remotion project)
+gif/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Bun
+# Note: bun.lock is committed (like frontend/ and docs/) so that
+# `bun install --frozen-lockfile` works reproducibly in CI/release.
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Local config override
+.global-config.yaml
+
+# Logs
+*.log
+
+# Agent session files
+.claude/scheduled_tasks.lock

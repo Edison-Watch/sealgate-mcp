@@ -1,0 +1,47 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v4.6.0"
+hooks = [
+  { id = "check-added-large-files" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "lint-links", name = "Lint markdown links", entry = "make lint_links", language = "system", pass_filenames = false, always_run = true },
+  { id = "make-fmt", name = "Run formatter (make fmt)", entry = "make fmt", language = "system", pass_filenames = false, always_run = true },
+  { id = "ai-writing-check", name = "AI writing check", entry = "bun run scripts/check_ai_writing.ts", language = "system", pass_filenames = false, always_run = true },
+  { id = "agents-validate", name = "Validate AGENTS.md", entry = "bun run scripts/validate-agents-md.ts", language = "system", pass_filenames = false, always_run = true },
+  { id = "duplicate-code", name = "Duplicate code check", entry = "make duplicate_code", language = "system", pass_filenames = false, always_run = true },
+  { id = "tech-debt", name = "Tech debt marker check", entry = "make tech_debt", language = "system", pass_filenames = false, always_run = true },
+]
+
+# ── Claude ↔ Codex skill & subagent sync ──────────────────────────
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "sync-agent-config"
+name = "sync Claude ↔ Codex skills & subagents; fail if drift was fixed"
+language = "system"
+entry = "bun run scripts/sync_agent_config.ts --check"
+pass_filenames = false
+always_run = true
+
+# ── Source-size guardrails (mirror GitHub Actions) ────────────────
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "check-large-files"
+name = "fail if any source file exceeds the line-count error threshold"
+language = "system"
+entry = "scripts/check_large_files.sh"
+files = "\\.(tsx|ts)$"
+
+[[repos.hooks]]
+id = "check-folder-sizes"
+name = "fail if any source folder exceeds the file-count error threshold"
+language = "system"
+entry = "scripts/check_folder_sizes.sh"
+files = "\\.(tsx|ts)$"

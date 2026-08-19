@@ -1,0 +1,42 @@
+name: Validate AGENTS.md
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'scripts/validate-agents-md.ts'
+      - '.github/workflows/agents_validate.yaml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'scripts/validate-agents-md.ts'
+      - '.github/workflows/agents_validate.yaml'
+  workflow_dispatch:
+
+jobs:
+  agents_validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        submodules: 'recursive'
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout submodules
+      run: |
+        git submodule init
+        git submodule update
+
+    - uses: oven-sh/setup-bun@v2
+
+    - name: Install dependencies
+      run: bun install
+
+    - name: Validate AGENTS.md
+      run: make agents_validate

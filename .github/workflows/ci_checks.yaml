@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - '.github/workflows/**'
+
+jobs:
+  lint:
+    if: github.event_name == 'pull_request' || github.event.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+      - name: Setup
+        run: bun install
+      - name: Run lint
+        run: make lint
+      - name: Run dead code check
+        run: make deadcode
+      - name: Run type check
+        run: make typecheck
+      - name: Run tech debt check
+        run: make tech_debt
+      - name: Run duplicate code check
+        run: make duplicate_code
+      - name: Run import boundary check
+        run: make import_lint
+      - name: Run markdown link check
+        run: make lint_links
+      - name: Run AI writing check
+        run: make check_ai_writing

@@ -1,0 +1,84 @@
+---
+title: Quick Start
+description: Get started with this Bun/TypeScript template
+---
+
+Welcome to the docs! Follow these steps to get started with this Bun/TypeScript template.
+
+## Quick Start
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Steps>
+<Step>
+
+### Setup Environment
+
+Install all dependencies using Bun:
+
+```bash
+make setup
+```
+
+This will run `bun install` and set up your project.
+
+</Step>
+
+<Step>
+
+### Configure Settings
+
+Copy the example environment file and add your API keys:
+
+```bash
+cp .env.example .env
+```
+
+Edit `src/config/global-config.yaml` to customize configuration values for your project.
+
+</Step>
+
+<Step>
+
+### Run the Application
+
+Execute the main application:
+
+```bash
+make all
+```
+
+Or run directly:
+
+```bash
+bun run src/index.ts
+```
+
+</Step>
+
+<Step>
+
+### Run Tests
+
+Verify everything is working by running the test suite:
+
+```bash
+make test
+```
+
+Run code quality checks:
+
+```bash
+make ci
+```
+
+</Step>
+</Steps>
+
+## Next Steps
+
+<Cards>
+  <Card title="Learn more about Configuration" href="/docs/test" />
+  <Card title="API Reference" href="/docs/api" />
+  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+</Cards>

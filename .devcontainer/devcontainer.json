@@ -1,0 +1,28 @@
+{
+    "name": "Bun-Template DevContainer",
+    "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:1": {
+            "configureZsh": true
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "biomejs.biome",
+                "oven.bun-vscode",
+                "tamasfe.even-better-toml",
+                "mkhl.direnv"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "biomejs.biome",
+                "[typescript]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                }
+            }
+        }
+    },
+    "postCreateCommand": "curl -fsSL https://bun.sh/install | bash && export PATH=\"$HOME/.bun/bin:$PATH\" && make setup",
+    "remoteUser": "vscode"
+}
