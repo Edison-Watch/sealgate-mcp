@@ -3,7 +3,7 @@ import { registerCheckPolicy } from "./tools/check-policy";
 import { registerGetSessionStatus } from "./tools/get-session-status";
 import { registerListMcpServers } from "./tools/list-mcp-servers";
 
-export const SERVER_NAME = "sealgate-mcp";
+export const SERVER_NAME = "sealgate";
 export const SERVER_VERSION = "0.1.0";
 
 const INSTRUCTIONS =

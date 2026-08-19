@@ -4,7 +4,7 @@
         "sealgate": {
             "type": "stdio",
             "command": "npx",
-            "args": ["-y", "sealgate-mcp"],
+            "args": ["-y", "@sealgate/mcp"],
             "env": {
                 "SEALGATE_GATEWAY_URL": "${SEALGATE_GATEWAY_URL}",
                 "SEALGATE_API_KEY": "${SEALGATE_API_KEY}"

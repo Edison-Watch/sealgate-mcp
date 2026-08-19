@@ -1,7 +1,7 @@
 # Sealgate MCP Server
 
 [![MCP](https://img.shields.io/badge/protocol-MCP-blue)](https://modelcontextprotocol.io)
-[![npm](https://img.shields.io/npm/v/sealgate-mcp)](https://www.npmjs.com/package/sealgate-mcp)
+[![npm](https://img.shields.io/npm/v/@sealgate/mcp)](https://www.npmjs.com/package/@sealgate/mcp)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 The Model Context Protocol (MCP) server for [Sealgate](https://sealgate.ai),
@@ -45,7 +45,7 @@ Add the server to your MCP client. It runs over stdio via `npx`.
     "mcpServers": {
         "sealgate": {
             "command": "npx",
-            "args": ["-y", "sealgate-mcp"],
+            "args": ["-y", "@sealgate/mcp"],
             "env": {
                 "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"
@@ -63,7 +63,7 @@ Add the server to your MCP client. It runs over stdio via `npx`.
         "sealgate": {
             "type": "stdio",
             "command": "npx",
-            "args": ["-y", "sealgate-mcp"],
+            "args": ["-y", "@sealgate/mcp"],
             "env": {
                 "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"
@@ -79,10 +79,10 @@ Copy-paste configs also live in [`examples/`](examples/).
 
 ```bash
 # Run over stdio (default transport)
-npx -y sealgate-mcp
+npx -y @sealgate/mcp
 
 # Show usage
-npx -y sealgate-mcp --help
+npx -y @sealgate/mcp --help
 ```
 
 Set `SEALGATE_MCP_TRANSPORT=http` (with an optional `PORT`, default 3000) to

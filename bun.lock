@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "sealgate-mcp",
+      "name": "@sealgate/mcp",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.30.0",
         "yaml": "^2.8.2",

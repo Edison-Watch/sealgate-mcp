@@ -7,7 +7,7 @@ description: Govern how AI agents access data through your organisation's Sealga
 
 Sealgate is an AI data-leak-prevention platform: a security gateway and data
 firewall that sits between AI agents and enterprise data and tools. This skill
-uses the `sealgate-mcp` MCP server, a thin proxy to your organisation's Sealgate
+uses the `@sealgate/mcp` MCP server, a thin proxy to your organisation's Sealgate
 gateway.
 
 ## Setup
@@ -28,7 +28,7 @@ Install for an MCP client (for example, Claude Desktop or Cursor):
     "mcpServers": {
         "sealgate": {
             "command": "npx",
-            "args": ["-y", "sealgate-mcp"],
+            "args": ["-y", "@sealgate/mcp"],
             "env": {
                 "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"

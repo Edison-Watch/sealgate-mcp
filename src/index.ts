@@ -7,9 +7,9 @@ const HELP = `${SERVER_NAME} ${SERVER_VERSION}
 Sealgate MCP server: a thin MCP proxy to your organisation's Sealgate security gateway.
 
 Usage:
-  sealgate-mcp            Start the server over stdio (default)
-  sealgate-mcp --help     Show this help
-  sealgate-mcp --version  Print the version
+  sealgate            Start the server over stdio (default)
+  sealgate --help     Show this help
+  sealgate --version  Print the version
 
 Environment:
   SEALGATE_GATEWAY_URL    Base URL of your Sealgate MCP gateway (required at call time)

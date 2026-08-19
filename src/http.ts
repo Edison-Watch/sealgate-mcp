@@ -37,6 +37,6 @@ export function startHttpServer(port: number): void {
         await transport.handleRequest(req, res, await readBody(req));
     });
     httpServer.listen(port, () => {
-        process.stderr.write(`sealgate-mcp listening on http://127.0.0.1:${port}\n`);
+        process.stderr.write(`sealgate listening on http://127.0.0.1:${port}\n`);
     });
 }

@@ -20,8 +20,8 @@ startCommand:
         description: Sealgate API key issued from your dashboard.
   commandFunction: |
     (config) => ({
-      command: "sealgate-mcp",
-      args: [],
+      command: "bun",
+      args: ["run", "dist/index.js"],
       env: {
         SEALGATE_GATEWAY_URL: config.gatewayUrl,
         SEALGATE_API_KEY: config.apiKey
