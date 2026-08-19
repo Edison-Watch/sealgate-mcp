@@ -3,7 +3,7 @@ import { registerGetSessionStatus } from "./tools/get-session-status";
 import { registerListMcpServers } from "./tools/list-mcp-servers";
 
 export const SERVER_NAME = "sealgate";
-export const SERVER_VERSION = "0.1.0";
+export const SERVER_VERSION = "0.1.1";
 
 const INSTRUCTIONS =
     "Sealgate governs how AI agents access data. These tools proxy your " +
