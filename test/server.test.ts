@@ -35,7 +35,7 @@ describe("config", () => {
 });
 
 describe("server", () => {
-    test("builds and exposes the three proxy tools over MCP", async () => {
+    test("builds and exposes the two proxy tools over MCP", async () => {
         const server = buildServer();
         const client = new Client({ name: "test-client", version: "0.0.0" });
         const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
@@ -46,11 +46,7 @@ describe("server", () => {
 
         const { tools } = await client.listTools();
         const names = tools.map((tool) => tool.name).sort();
-        expect(names).toEqual([
-            "check_policy",
-            "get_session_status",
-            "list_mcp_servers",
-        ]);
+        expect(names).toEqual(["get_session_status", "list_mcp_servers"]);
 
         await client.close();
         await server.close();
@@ -78,37 +74,6 @@ describe("server", () => {
         expect(result.isError).toBe(true);
         const [block] = result.content as { type: string; text: string }[];
         expect(block?.text).toContain("Sealgate is not configured");
-
-        await client.close();
-        await server.close();
-        process.env.SEALGATE_GATEWAY_URL = priorUrl ?? "";
-        process.env.SEALGATE_API_KEY = priorKey ?? "";
-    });
-
-    test("check_policy reports that it is not yet supported", async () => {
-        // The published Sealgate Management API has no per-action policy
-        // evaluation endpoint, so this tool returns a clear message even when
-        // configured, rather than calling a fabricated endpoint.
-        const priorUrl = process.env.SEALGATE_GATEWAY_URL;
-        const priorKey = process.env.SEALGATE_API_KEY;
-        process.env.SEALGATE_GATEWAY_URL = "https://dashboard.sealgate.ai";
-        process.env.SEALGATE_API_KEY = "sk-test";
-
-        const server = buildServer();
-        const client = new Client({ name: "test-client", version: "0.0.0" });
-        const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-        await Promise.all([
-            server.connect(serverTransport),
-            client.connect(clientTransport),
-        ]);
-
-        const result = await client.callTool({
-            name: "check_policy",
-            arguments: { tool: "send_email" },
-        });
-        expect(result.isError).toBe(true);
-        const [block] = result.content as { type: string; text: string }[];
-        expect(block?.text).toContain("not yet supported");
 
         await client.close();
         await server.close();

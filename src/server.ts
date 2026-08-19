@@ -1,5 +1,4 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { registerCheckPolicy } from "./tools/check-policy";
 import { registerGetSessionStatus } from "./tools/get-session-status";
 import { registerListMcpServers } from "./tools/list-mcp-servers";
 
@@ -19,6 +18,5 @@ export function buildServer(): McpServer {
     );
     registerListMcpServers(server);
     registerGetSessionStatus(server);
-    registerCheckPolicy(server);
     return server;
 }

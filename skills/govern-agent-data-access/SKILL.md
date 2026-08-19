@@ -46,10 +46,6 @@ Install for an MCP client (for example, Claude Desktop or Cursor):
 - `get_session_status` - review recent agent sessions and audit events: what
   agents did, which data flowed, and any blocked actions. Accepts optional
   `perPage`, `status`, and `risk` filters.
-- `check_policy` - intended to evaluate a proposed tool call against the policy
-  engine. Not yet supported: the published Sealgate Management API exposes no
-  per-action policy-evaluation endpoint, so the tool returns a message saying so
-  until that endpoint is confirmed.
 
 ## When to use
 

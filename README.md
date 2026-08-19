@@ -20,7 +20,6 @@ its own gateway, so you supply the URL and key.
 |------|--------------|
 | `list_mcp_servers` | List the MCP servers governed by your Sealgate gateway, with access-control classification and connection status. |
 | `get_session_status` | Review recent agent sessions and audit events: what agents did, which data flowed, and any blocked actions. |
-| `check_policy` | Intended to evaluate a proposed tool call against your Sealgate policy engine and return the deterministic decision (allow, block, or review). **Not yet supported**: the published Sealgate Management API exposes no per-action policy-evaluation endpoint, so the tool returns a message explaining this until that endpoint is confirmed. |
 
 ## Configuration
 

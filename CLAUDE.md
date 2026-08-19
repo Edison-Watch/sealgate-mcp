@@ -38,7 +38,7 @@ make fmt                    # Auto-fix formatting with Biome
 - `src/gateway.ts` - fetch wrapper that calls the configured Sealgate gateway
   with Bearer auth.
 - `src/tools/` - one file per proxy tool (`list_mcp_servers`,
-  `get_session_status`, `check_policy`); `helpers.ts` holds the shared
+  `get_session_status`); `helpers.ts` holds the shared
   config-check and result-marshalling logic.
 - `test/` - bun test suite; drives the server through an in-memory MCP client.
 

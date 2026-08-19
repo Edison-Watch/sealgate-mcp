@@ -11,5 +11,5 @@
     "logo": "https://sealgate.ai/sealgate-logo.png",
     "contact": "hello@sealgate.ai",
     "transport": "stdio",
-    "tools": ["list_mcp_servers", "get_session_status", "check_policy"]
+    "tools": ["list_mcp_servers", "get_session_status"]
 }
