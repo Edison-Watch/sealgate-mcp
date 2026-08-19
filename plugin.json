@@ -1,0 +1,31 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "name": "sealgate",
+    "version": "0.1.1",
+    "description": "AI data leak prevention. Sealgate governs how AI agents (Claude, ChatGPT, Cursor, Copilot) access your data so organizations can adopt AI and connect it securely to real data, without data leaks. It acts as an MCP gateway and proxy with deterministic tool-call-level policy rules, session monitoring, shadow MCP server quarantine, and SIEM audit streaming.",
+    "homepage": "https://sealgate.ai",
+    "keywords": [
+        "agentic-ai-security",
+        "mcp-security",
+        "mcp-gateway",
+        "data-leak-prevention",
+        "tool-call-governance"
+    ],
+    "extensions": {
+        "ai.sealgate": {
+            "legalName": "GPU-EVM LTD",
+            "contact": "hello@sealgate.ai",
+            "documentationUrl": "https://docs.sealgate.ai",
+            "agentCardUrl": "https://sealgate.ai/.well-known/agent-card.json",
+            "aiCatalogUrl": "https://sealgate.ai/.well-known/ai-catalog.json",
+            "llmsTxtUrl": "https://sealgate.ai/llms.txt",
+            "npmPackage": "@sealgate/mcp",
+            "mcpRegistryName": "io.github.Edison-Watch/sealgate-mcp",
+            "mcp": {
+                "role": "Gateway/proxy, server management, daemon-based MCP configuration monitoring, and MCP server quarantine.",
+                "documentationUrl": "https://docs.sealgate.ai/en/docs/admin-guide/managing-servers",
+                "note": "This repository ships the @sealgate/mcp stdio server (see mcp.json). Sealgate does not publish a single fixed public MCP endpoint; each deployment routes agents through its own Sealgate MCP gateway/proxy, scoped per organisation."
+            }
+        }
+    }
+}
