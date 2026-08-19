@@ -1,6 +1,6 @@
 {
     "name": "@sealgate/mcp",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "mcpName": "io.github.Edison-Watch/sealgate-mcp",
     "description": "Sealgate MCP server: a thin MCP proxy to your organisation's Sealgate AI security gateway and data firewall.",
     "type": "module",
