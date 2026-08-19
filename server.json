@@ -3,7 +3,7 @@
     "name": "io.github.Edison-Watch/sealgate-mcp",
     "title": "Sealgate",
     "description": "Sealgate gateway proxy: list governed MCP servers and review agent session and audit status.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": {
         "url": "https://github.com/Edison-Watch/sealgate-mcp",
         "source": "github"
@@ -32,7 +32,7 @@
             "registryType": "npm",
             "registryBaseUrl": "https://registry.npmjs.org",
             "identifier": "@sealgate/mcp",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "runtimeHint": "npx",
             "transport": {
                 "type": "stdio"

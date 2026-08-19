@@ -2,7 +2,7 @@
     "name": "io.github.Edison-Watch/sealgate-mcp",
     "displayName": "Sealgate MCP Gateway",
     "description": "Sealgate is a security gateway and data firewall for AI agents. It runs as a per-user FastMCP proxy that aggregates every MCP server a user has enabled behind a single Streamable HTTP endpoint, enforcing access-control policies and blocking data exfiltration in real time. This card documents the stable builtin control tools; each user session also exposes the tools of whatever MCP servers that user has enabled.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "vendor": "GPU-EVM LTD (Sealgate)",
     "homepage": "https://sealgate.ai",
     "documentation": "https://docs.sealgate.ai/en/docs/developers",
