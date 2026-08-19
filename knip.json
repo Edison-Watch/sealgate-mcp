@@ -1,5 +1,5 @@
 {
-    "entry": ["src/**/*.ts", "scripts/**/*.ts", "onboard.ts"],
-    "project": ["src/**/*.ts", "scripts/**/*.ts"],
+    "entry": ["scripts/*.ts", "test/**/*.ts"],
+    "project": ["src/**/*.ts", "scripts/**/*.ts", "test/**/*.ts"],
     "ignoreDependencies": ["markdown-link-check", "jscpd"]
 }

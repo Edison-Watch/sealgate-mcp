@@ -1,17 +1,40 @@
 {
-    "name": "bun-template",
+    "name": "@sealgate/mcp",
     "version": "0.1.0",
-    "description": "🥟 Agent-ergonomic opinionated Bun template",
+    "description": "Sealgate MCP server: a thin MCP proxy to your organisation's Sealgate AI security gateway and data firewall.",
     "type": "module",
+    "bin": {
+        "sealgate": "./dist/index.js"
+    },
+    "files": ["dist", "README.md", "LICENSE"],
+    "homepage": "https://sealgate.ai",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Edison-Watch/sealgate-mcp.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Edison-Watch/sealgate-mcp/issues"
+    },
+    "license": "MIT",
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "sealgate",
+        "ai-security",
+        "data-loss-prevention",
+        "mcp-gateway",
+        "mcp-server",
+        "ai-agents"
+    ],
     "scripts": {
         "dev": "bun run --watch src/index.ts",
         "start": "bun run src/index.ts",
-        "build": "bun build src/index.ts --outdir dist --target bun --minify",
+        "build": "bun build src/index.ts --outdir dist --target node --minify",
         "fmt": "biome check --write",
         "lint": "biome check",
         "deadcode": "knip",
         "typecheck": "tsc --noEmit",
-        "lint:links": "find . -name '*.md' -not -path './node_modules/*' -not -path './docs/*' | xargs markdown-link-check --quiet --config .markdown-link-check.json",
+        "lint:links": "find . -name '*.md' -not -path './node_modules/*' | xargs markdown-link-check --quiet --config .markdown-link-check.json",
         "ci": "bun run lint && bun run deadcode && bun run typecheck && bun run lint:links",
         "test": "bun test",
         "test:fast": "bun test --timeout 5000",
@@ -20,7 +43,6 @@
     "devDependencies": {
         "@biomejs/biome": "^1.9.0",
         "@types/bun": "^1.3.9",
-        "@types/to-ico": "^1.1.3",
         "dependency-cruiser": "^17.3.8",
         "jscpd": "^4.0.8",
         "knip": "^5.0.0",
@@ -28,10 +50,7 @@
         "typescript": "^5.7.0"
     },
     "dependencies": {
-        "@clack/prompts": "^1.0.1",
-        "@google/genai": "^1.42.0",
-        "sharp": "^0.34.5",
-        "to-ico": "^1.1.5",
+        "@modelcontextprotocol/sdk": "^1.30.0",
         "yaml": "^2.8.2",
         "zod": "^4.3.6"
     }

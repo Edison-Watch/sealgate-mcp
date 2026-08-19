@@ -1,0 +1,14 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+    "mcpServers": {
+        "sealgate": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "@sealgate/mcp"],
+            "env": {
+                "SEALGATE_GATEWAY_URL": "${SEALGATE_GATEWAY_URL}",
+                "SEALGATE_API_KEY": "${SEALGATE_API_KEY}"
+            }
+        }
+    }
+}

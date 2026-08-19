@@ -1,0 +1,27 @@
+# Sealgate MCP server
+
+This repo is the public MCP server for Sealgate, an AI data-leak-prevention
+platform. The server is a thin MCP proxy: it forwards tool calls to an
+organisation's own Sealgate gateway, configured via SEALGATE_GATEWAY_URL and
+SEALGATE_API_KEY. There is no fixed public gateway; never hardcode a URL or key.
+
+## Stack
+- Bun + TypeScript, MCP TypeScript SDK (@modelcontextprotocol/sdk), zod.
+- Biome for lint/format: 4-space indent, double quotes.
+
+## Layout
+- src/index.ts      entrypoint (stdio by default, optional HTTP via env)
+- src/server.ts     builds the McpServer and registers tools
+- src/config.ts     validates the two env vars with zod
+- src/gateway.ts    fetch wrapper that calls the Sealgate gateway with Bearer auth
+- src/tools/        one file per proxy tool
+
+## Working here
+- Build: `bun run build`  (or `bunx tsc --noEmit` to typecheck)
+- Test:  `bun test`
+- All checks: `make ci`  (lint, deadcode, typecheck, tech-debt, duplicate-code,
+  import boundaries, markdown links, AI-writing, Claude/Codex sync)
+- Run the server: `bun run src/index.ts` (add `--help` for usage)
+- No em dashes in any file; the AI-writing check fails on them.
+- Tools must fail gracefully (return an error result) when the env is unset,
+  never throw at startup.

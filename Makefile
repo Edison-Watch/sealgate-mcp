@@ -14,7 +14,7 @@ PROJECT_ROOT=.
 ########################################################
 
 ### Help
-.PHONY: help docs
+.PHONY: help
 help: ## Show this help message
 	@echo "$(BLUE)Available Make Targets$(RESET)"
 	@echo ""
@@ -28,31 +28,6 @@ help: ## Show this help message
 			} \
 			printf "  $(YELLOW)%-23s$(RESET) %s\n", $$1, $$2 \
 		}' $(MAKEFILE_LIST)
-
-########################################################
-# Onboarding & Setup
-########################################################
-
-### Onboarding & Setup
-.PHONY: onboard
-onboard: check_bun ## Interactive onboarding CLI (rename, deps, env, hooks, media)
-	@bun run onboard.ts
-
-########################################################
-# Asset Generation
-########################################################
-
-### Asset Generation
-.PHONY: banner logo
-banner: check_bun ## Generate project banner image
-	@echo "$(YELLOW)🎨 Generating banner...$(RESET)"
-	@bun run scripts/generate-banner.ts
-	@echo "$(GREEN)✅ Banner generated at media/banner.png$(RESET)"
-
-logo: check_bun ## Generate logo, icons, and favicon
-	@echo "$(YELLOW)🎨 Generating logo suite...$(RESET)"
-	@bun run scripts/generate-logo.ts
-	@echo "$(GREEN)✅ Logo suite generated in docs/public/$(RESET)"
 
 ########################################################
 # Check dependencies
@@ -90,34 +65,23 @@ sync-agent-config: check_bun ## Sync Claude <-> Codex skills & subagents (regene
 sync-agent-config-check: check_bun ## Fail if Claude <-> Codex sync is out of date (drift gate for CI)
 	@bun run scripts/sync_agent_config.ts --check
 
-view_deps_size: check_bun ## Show total node_modules size
-	@echo "$(YELLOW)🔍Checking node_modules size...$(RESET)"
-	@du -sh node_modules
-	@echo "$(GREEN)Done.$(RESET)"
-
-view_deps_size_by_package: check_bun ## Show node_modules size by package
-	@echo "$(YELLOW)🔍Checking node_modules size by package...$(RESET)"
-	@du -sh node_modules/*/ | sort -h
-	@echo "$(GREEN)Done.$(RESET)"
-
 ########################################################
 # Run
 ########################################################
 
 ### Running
-all: check_bun ## Install deps and run main application
+all: check_bun ## Install deps and run the MCP server over stdio
 	@bun install
-	@echo "$(GREEN)🏁 Running main application...$(RESET)"
+	@echo "$(GREEN)🏁 Running Sealgate MCP server...$(RESET)"
 	@bun run start
-	@echo "$(GREEN)✅ Main application run completed.$(RESET)"
 
-dev: check_bun ## Run in watch mode
+dev: check_bun ## Run the server in watch mode
 	@bun run dev
 
-docs: ## Run docs with bun
-	@echo "$(GREEN)📚Running docs...$(RESET)"
-	@cd docs && bun run dev
-	@echo "$(GREEN)✅ Docs run completed.$(RESET)"
+build: check_bun ## Bundle the server to dist/
+	@echo "$(YELLOW)📦 Building...$(RESET)"
+	@bun run build
+	@echo "$(GREEN)✅ Build completed.$(RESET)"
 
 ########################################################
 # Testing
@@ -169,18 +133,13 @@ deadcode: check_bun ## Find dead code and unused deps with knip
 
 import_lint: check_bun ## Enforce module boundaries with dependency-cruiser
 	@echo "$(YELLOW)🔍 Running dependency-cruiser...$(RESET)"
-	@bunx depcruise src tests --config .dependency-cruiser.cjs --output-type err
+	@bunx depcruise src test --config .dependency-cruiser.cjs --output-type err
 	@echo "$(GREEN)✅ Module boundary check completed.$(RESET)"
 
 typecheck: check_bun ## Run TypeScript type checker
 	@echo "$(YELLOW)🔍 Running TypeScript type checker...$(RESET)"
 	@bunx tsc --noEmit
 	@echo "$(GREEN)✅ Type check completed.$(RESET)"
-
-docs_lint: ## Lint docs links
-	@echo "$(YELLOW)🔍Linting docs links...$(RESET)"
-	@cd docs && bun run lint:links
-	@echo "$(GREEN)✅Docs linting completed.$(RESET)"
 
 lint_links: check_bun ## Check markdown links
 	@echo "$(YELLOW)🔍 Linting markdown links...$(RESET)"
