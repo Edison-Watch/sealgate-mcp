@@ -1,15 +1,191 @@
 {
-    "name": "io.github.edison-watch/sealgate-mcp",
-    "displayName": "Sealgate",
-    "description": "AI data-leak prevention. Sealgate is a security gateway and data firewall for AI agents; this MCP server proxies your organisation's Sealgate Management API so agents can list governed MCP servers and review agent session and audit status.",
-    "version": "0.1.0",
+    "name": "io.github.Edison-Watch/sealgate-mcp",
+    "displayName": "Sealgate MCP Gateway",
+    "description": "Sealgate is a security gateway and data firewall for AI agents. It runs as a per-user FastMCP proxy that aggregates every MCP server a user has enabled behind a single Streamable HTTP endpoint, enforcing access-control policies and blocking data exfiltration in real time. This card documents the stable builtin control tools; each user session also exposes the tools of whatever MCP servers that user has enabled.",
+    "version": "0.1.1",
     "vendor": "GPU-EVM LTD (Sealgate)",
     "homepage": "https://sealgate.ai",
-    "documentation": "https://docs.sealgate.ai",
+    "documentation": "https://docs.sealgate.ai/en/docs/developers",
     "repository": "https://github.com/Edison-Watch/sealgate-mcp",
     "icon": "https://sealgate.ai/sealgate-logo.png",
     "logo": "https://sealgate.ai/sealgate-logo.png",
     "contact": "hello@sealgate.ai",
-    "transport": "stdio",
-    "tools": ["list_mcp_servers", "get_session_status"]
+    "instructions": "Connect to the Sealgate gateway over Streamable HTTP. The Sealgate API key is passed as a URL path segment, not as an Authorization header and not via OAuth. Use the URL https://mcp.sealgate.ai/mcp/{api_key}/?client={label}, replacing {api_key} with your Sealgate API key (obtained from the Sealgate dashboard) and {label} with an optional client session label. The gateway host is per-organization; mcp.sealgate.ai is the managed release host, while demo and self-hosted deployments use their own hosts. Beyond the builtin control tools listed here, the gateway dynamically exposes the tools of every MCP server the authenticated user has enabled, subject to Sealgate's access-control policies.",
+    "serverUrl": "https://mcp.sealgate.ai/mcp/{api_key}/?client={label}",
+    "transport": "streamable-http",
+    "auth": {
+        "type": "apiKey",
+        "in": "path",
+        "description": "Sealgate API key as a URL path segment; obtain it from the Sealgate dashboard. This is not OAuth and not a bearer/Authorization header. The optional ?client={label} query parameter is a session label, not a credential."
+    },
+    "capabilities": {
+        "tools": true,
+        "resources": true,
+        "prompts": true
+    },
+    "tools": [
+        {
+            "name": "builtin_obtain_edison_session_token",
+            "description": "Obtain a session token to pass on later tool calls in the same chat.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            },
+            "annotations": {
+                "title": "Obtain Session Token",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_echo",
+            "description": "Echo back the provided text.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "description": "The text to echo back"
+                    },
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": ["text"]
+            },
+            "annotations": {
+                "title": "Echo",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_get_server_info",
+            "description": "Get information about the Sealgate server.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": []
+            },
+            "annotations": {
+                "title": "Get Server Info",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_whoami",
+            "description": "Return the identity of the currently logged-in user for this MCP session.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": []
+            },
+            "annotations": {
+                "title": "Who Am I",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_get_security_status",
+            "description": "Get the current session's security status and data access summary.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": []
+            },
+            "annotations": {
+                "title": "Get Security Status",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_get_available_tools",
+            "description": "Get a list of all available tools.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": []
+            },
+            "annotations": {
+                "title": "Get Available Tools",
+                "readOnlyHint": true,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_tools_changed",
+            "description": "Notify the MCP client that the tool list has changed.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": []
+            },
+            "annotations": {
+                "title": "Notify Tools Changed",
+                "readOnlyHint": false,
+                "destructiveHint": false
+            }
+        },
+        {
+            "name": "builtin_register_new_mcp_url",
+            "description": "Register a new MCP server for this organization by its URL. Use this when the user asks to add or connect a new MCP server, e.g. \"add https://mcp.example.com as one of our MCPs\". Adding a server ALWAYS requires a human admin to approve the request in the Sealgate dashboard - an agent (even an admin's) can never add a server on its own. Admin callers get back an approval_url deep-link to review and approve the request themselves; other callers' requests go to their organization's admins. Once approved the server appears org-wide, and each user signs in to it with their own identity via that server's Authenticate tool.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The remote MCP server URL."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Optional short server name."
+                    },
+                    "session_token": {
+                        "type": "string",
+                        "description": "Session token from builtin_obtain_edison_session_token"
+                    }
+                },
+                "required": ["url"]
+            },
+            "annotations": {
+                "title": "Register New MCP Server",
+                "readOnlyHint": false,
+                "destructiveHint": false
+            }
+        }
+    ],
+    "notes": "The gateway is a per-user FastMCP proxy. The tools listed here are the stable builtin control tools that are always present. In addition, the gateway dynamically aggregates the tools of every MCP server the authenticated user has enabled, so the full tool set is per-user and not fixed. One builtin resource (info://builtin/app) and one builtin prompt (builtin_summarize_text) are also exposed. An opt-in code-mode tool (builtin_code_mode) can be enabled per session via the connection URL and is therefore not listed among the always-present tools. The meta-tool builtin_call_tool (invoke any available tool by name) is not surfaced in the gateway's default tools/list and is therefore not listed among the always-present tools either.",
+    "dynamicTools": {
+        "description": "Beyond the builtin control tools, the gateway exposes, per authenticated user, every tool from every MCP server that user has enabled. These aggregated tools are governed by Sealgate's CEL access-control policies and are not enumerated in this static card because they vary by user and organization."
+    }
 }

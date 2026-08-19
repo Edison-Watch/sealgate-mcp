@@ -2,8 +2,11 @@
 
 This repo is the public MCP server for Sealgate, an AI data-leak-prevention
 platform. The server is a thin MCP proxy: it forwards tool calls to an
-organisation's own Sealgate gateway, configured via SEALGATE_GATEWAY_URL and
-SEALGATE_API_KEY. There is no fixed public gateway; never hardcode a URL or key.
+Sealgate gateway, configured via SEALGATE_GATEWAY_URL and SEALGATE_API_KEY.
+Sealgate runs managed release hosts (the remote MCP gateway at mcp.sealgate.ai,
+advertised in the discovery manifests, and the Management API at
+dashboard.sealgate.ai), but demo and self-hosted orgs run their own, so this
+package stays host-agnostic: never hardcode a gateway URL or key.
 
 ## Stack
 - Bun + TypeScript, MCP TypeScript SDK (@modelcontextprotocol/sdk), zod.

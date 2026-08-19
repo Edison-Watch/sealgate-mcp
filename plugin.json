@@ -24,7 +24,7 @@
             "mcp": {
                 "role": "Gateway/proxy, server management, daemon-based MCP configuration monitoring, and MCP server quarantine.",
                 "documentationUrl": "https://docs.sealgate.ai/en/docs/admin-guide/managing-servers",
-                "note": "This repository ships the @sealgate/mcp stdio server (see mcp.json). Sealgate does not publish a single fixed public MCP endpoint; each deployment routes agents through its own Sealgate MCP gateway/proxy, scoped per organisation."
+                "note": "This repository ships the @sealgate/mcp stdio bridge (see mcp.json). Sealgate also runs a managed remote MCP gateway over Streamable HTTP at mcp.sealgate.ai (see server.json remotes and .well-known/mcp/server-card.json); demo and self-hosted deployments route agents through their own Sealgate MCP gateway/proxy, scoped per organisation."
             }
         }
     }
