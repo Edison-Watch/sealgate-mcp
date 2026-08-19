@@ -20,7 +20,7 @@ its own gateway, so you supply the URL and key.
 |------|--------------|
 | `list_mcp_servers` | List the MCP servers governed by your Sealgate gateway, with access-control classification and connection status. |
 | `get_session_status` | Review recent agent sessions and audit events: what agents did, which data flowed, and any blocked actions. |
-| `check_policy` | Evaluate a proposed tool call against your Sealgate policy engine and return the deterministic decision (allow, block, or review) with the matching rule. |
+| `check_policy` | Intended to evaluate a proposed tool call against your Sealgate policy engine and return the deterministic decision (allow, block, or review). **Not yet supported**: the published Sealgate Management API exposes no per-action policy-evaluation endpoint, so the tool returns a message explaining this until that endpoint is confirmed. |
 
 ## Configuration
 
@@ -28,7 +28,7 @@ Set two environment variables, both issued or hosted by your organisation:
 
 | Variable | Description |
 |----------|-------------|
-| `SEALGATE_GATEWAY_URL` | Base URL of your Sealgate MCP gateway. |
+| `SEALGATE_GATEWAY_URL` | Base URL of your Sealgate Management API (e.g. `https://dashboard.sealgate.ai`). |
 | `SEALGATE_API_KEY` | Sealgate API key from your dashboard. |
 
 If either is unset, every tool returns a clear configuration message instead of
@@ -47,7 +47,7 @@ Add the server to your MCP client. It runs over stdio via `npx`.
             "command": "npx",
             "args": ["-y", "@sealgate/mcp"],
             "env": {
-                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_GATEWAY_URL": "https://dashboard.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"
             }
         }
@@ -65,7 +65,7 @@ Add the server to your MCP client. It runs over stdio via `npx`.
             "command": "npx",
             "args": ["-y", "@sealgate/mcp"],
             "env": {
-                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_GATEWAY_URL": "https://dashboard.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"
             }
         }

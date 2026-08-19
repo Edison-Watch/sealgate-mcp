@@ -62,7 +62,7 @@ Runtime configuration is exactly two environment variables read and validated in
 
 ```bash
 # .env (git-ignored; see .env.example)
-SEALGATE_GATEWAY_URL=https://your-org.gateway.sealgate.ai
+SEALGATE_GATEWAY_URL=https://dashboard.sealgate.ai
 SEALGATE_API_KEY=your-sealgate-api-key
 ```
 

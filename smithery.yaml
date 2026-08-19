@@ -1,7 +1,7 @@
 # Smithery deployment manifest for the Sealgate MCP server.
 # The server ships as a Docker image (see Dockerfile) and speaks MCP over stdio.
-# Each org supplies its own gateway URL and API key at connect time; there is no
-# shared public Sealgate endpoint.
+# Each org supplies its own Management API base URL and API key at connect time;
+# there is no shared public Sealgate endpoint.
 startCommand:
   type: stdio
   configSchema:
@@ -12,8 +12,8 @@ startCommand:
     properties:
       gatewayUrl:
         type: string
-        title: Sealgate gateway URL
-        description: Base URL of your organisation's Sealgate MCP gateway.
+        title: Sealgate Management API URL
+        description: Base URL of your Sealgate Management API (e.g. https://dashboard.sealgate.ai).
       apiKey:
         type: string
         title: Sealgate API key

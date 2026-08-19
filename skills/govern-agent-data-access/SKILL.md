@@ -30,7 +30,7 @@ Install for an MCP client (for example, Claude Desktop or Cursor):
             "command": "npx",
             "args": ["-y", "@sealgate/mcp"],
             "env": {
-                "SEALGATE_GATEWAY_URL": "https://your-org.gateway.sealgate.ai",
+                "SEALGATE_GATEWAY_URL": "https://dashboard.sealgate.ai",
                 "SEALGATE_API_KEY": "your-sealgate-api-key"
             }
         }
@@ -41,13 +41,15 @@ Install for an MCP client (for example, Claude Desktop or Cursor):
 ## Tools
 
 - `list_mcp_servers` - list the MCP servers registered with the gateway, with
-  their access-control classification and connection status.
+  their access-control classification and connection status. Accepts optional
+  `query` (free-text filter) and `perPage`.
 - `get_session_status` - review recent agent sessions and audit events: what
-  agents did, which data flowed, and any blocked actions. Accepts an optional
-  `limit`.
-- `check_policy` - evaluate a proposed tool call (`tool`, optional `server`,
-  optional `arguments`) against the policy engine and return the deterministic
-  decision with the matching rule.
+  agents did, which data flowed, and any blocked actions. Accepts optional
+  `perPage`, `status`, and `risk` filters.
+- `check_policy` - intended to evaluate a proposed tool call against the policy
+  engine. Not yet supported: the published Sealgate Management API exposes no
+  per-action policy-evaluation endpoint, so the tool returns a message saying so
+  until that endpoint is confirmed.
 
 ## When to use
 

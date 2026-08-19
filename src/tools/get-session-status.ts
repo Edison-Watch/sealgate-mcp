@@ -10,20 +10,31 @@ export function registerGetSessionStatus(server: McpServer): void {
             title: "Get recent session and audit status",
             description:
                 "Fetch recent Sealgate agent sessions and audit events so you can " +
-                "see what agents did, which data flowed, and any blocked actions.",
+                "see what agents did, which data flowed, and any blocked actions. " +
+                "Returns a paginated page of sessions (agent_name, user_email, " +
+                "created_at, status, tool_call_count, trifecta_flags, block_severity, " +
+                "acl_level).",
             inputSchema: {
-                limit: z
+                perPage: z
                     .number()
                     .int()
                     .positive()
-                    .max(100)
+                    .max(200)
                     .optional()
-                    .describe("Maximum number of recent sessions to return"),
+                    .describe("Maximum sessions to return per page (default 50)"),
+                status: z
+                    .string()
+                    .optional()
+                    .describe("Filter by session status (e.g. active, completed)"),
+                risk: z.string().optional().describe("Filter by risk level"),
             },
         },
-        ({ limit }) =>
+        ({ perPage, status, risk }) =>
             withGateway((config) =>
-                gatewayFetch(config, { path: "/api/v1/sessions", query: { limit } }),
+                gatewayFetch(config, {
+                    path: "/api/v1/sessions",
+                    query: { per_page: perPage, status, risk },
+                }),
             ),
     );
 }

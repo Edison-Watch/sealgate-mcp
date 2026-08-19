@@ -35,9 +35,10 @@ function buildUrl(config: SealgateConfig, request: GatewayRequest): URL {
 }
 
 /**
- * Call the org-supplied Sealgate gateway with Bearer auth. Throws an Error with
- * a readable message on non-2xx responses; the caller turns that into an MCP
- * tool error result.
+ * Call the org-supplied Sealgate Management API with HTTP Bearer auth
+ * (`Authorization: Bearer <SEALGATE_API_KEY>`, as the published OpenAPI
+ * contract requires). Throws an Error with a readable message on non-2xx
+ * responses; the caller turns that into an MCP tool error result.
  */
 export async function gatewayFetch(
     config: SealgateConfig,

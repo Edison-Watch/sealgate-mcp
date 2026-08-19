@@ -1,7 +1,7 @@
 {
     "name": "io.github.edison-watch/sealgate-mcp",
     "displayName": "Sealgate",
-    "description": "AI data-leak prevention. Sealgate is a security gateway and data firewall for AI agents; this MCP server proxies your organisation's Sealgate gateway so agents can list governed MCP servers, review session and audit status, and evaluate tool calls against policy.",
+    "description": "AI data-leak prevention. Sealgate is a security gateway and data firewall for AI agents; this MCP server proxies your organisation's Sealgate Management API so agents can list governed MCP servers and review agent session and audit status.",
     "version": "0.1.0",
     "vendor": "GPU-EVM LTD (Sealgate)",
     "homepage": "https://sealgate.ai",

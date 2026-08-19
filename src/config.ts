@@ -1,9 +1,11 @@
 import { z } from "zod";
 
 /**
- * Sealgate MCP is a thin client. It does not host a fixed public endpoint:
- * every organisation runs its own Sealgate gateway, so the gateway URL and
- * API key are supplied by the user through environment variables.
+ * Sealgate MCP is a thin client for the Sealgate Management REST API (the
+ * control plane at e.g. https://dashboard.sealgate.ai). It does not host a
+ * fixed public endpoint: each organisation points at its own Sealgate host, so
+ * the base URL and API key are supplied by the user through environment
+ * variables.
  */
 export const configSchema = z.object({
     gatewayUrl: z.url(),
@@ -17,9 +19,10 @@ type ConfigResult =
     | { ok: false; message: string };
 
 const MISSING_CONFIG_MESSAGE =
-    "Sealgate is not configured. Set SEALGATE_GATEWAY_URL (your organisation's " +
-    "Sealgate MCP gateway base URL) and SEALGATE_API_KEY (a key issued from your " +
-    "Sealgate dashboard), then restart the server. See https://docs.sealgate.ai.";
+    "Sealgate is not configured. Set SEALGATE_GATEWAY_URL (your Sealgate " +
+    "Management API base URL, e.g. https://dashboard.sealgate.ai) and " +
+    "SEALGATE_API_KEY (a key issued from your Sealgate dashboard), then restart " +
+    "the server. See https://docs.sealgate.ai.";
 
 /**
  * Validate the two required environment variables. Returns a discriminated
