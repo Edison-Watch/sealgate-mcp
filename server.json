@@ -9,6 +9,24 @@
         "source": "github"
     },
     "websiteUrl": "https://sealgate.ai",
+    "remotes": [
+        {
+            "type": "streamable-http",
+            "url": "https://mcp.sealgate.ai/mcp/{api_key}/?client={label}",
+            "variables": {
+                "api_key": {
+                    "description": "Sealgate API key issued from your dashboard, passed as a URL path segment (not an Authorization header and not OAuth).",
+                    "isRequired": true,
+                    "isSecret": true
+                },
+                "label": {
+                    "description": "Optional client session label used to tag the connection.",
+                    "isRequired": false,
+                    "default": "mcp"
+                }
+            }
+        }
+    ],
     "packages": [
         {
             "registryType": "npm",
