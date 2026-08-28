@@ -3,6 +3,7 @@
 [![MCP](https://img.shields.io/badge/protocol-MCP-blue)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/npm/v/@sealgate/mcp)](https://www.npmjs.com/package/@sealgate/mcp)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![M8ven Score](https://m8ven.ai/badge/mcp/edison-watch-sealgate-mcp-1svx50)](https://m8ven.ai/mcp/edison-watch-sealgate-mcp-1svx50)
 
 The Model Context Protocol (MCP) server for [Sealgate](https://sealgate.ai),
 the AI data-leak-prevention platform: a security gateway and data firewall that
