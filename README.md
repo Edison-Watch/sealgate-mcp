@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/assets/banner.png" alt="SealGate &mdash; connect &amp; govern how AI interacts with your data" width="820">
+</p>
+
 # Sealgate MCP Server
 
 [![MCP](https://img.shields.io/badge/protocol-MCP-blue)](https://modelcontextprotocol.io)
