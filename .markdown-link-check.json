@@ -1,5 +1,11 @@
 {
-    "ignorePatterns": [{ "pattern": "^http://localhost" }],
+    "ignorePatterns": [
+        { "pattern": "^http://localhost" },
+        { "pattern": "^https://claude\\.ai/new" },
+        { "pattern": "^https://cursor\\.com/(deeplink|en/install-mcp)" },
+        { "pattern": "^https://vscode\\.dev/redirect" },
+        { "pattern": "^https://block\\.github\\.io/goose" }
+    ],
     "timeout": "20s",
     "aliveStatusCodes": [200, 206, 403, 429, 500, 502, 503, 504]
 }

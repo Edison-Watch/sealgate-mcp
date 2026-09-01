@@ -32,20 +32,33 @@ run their own, so this bridge stays host-agnostic: you supply the URL and key.
 Sealgate runs a managed remote MCP gateway at `https://mcp.sealgate.ai/mcp`. It
 is a per-user proxy that aggregates every MCP server you have enabled behind one
 Streamable HTTP endpoint and enforces Sealgate's access-control policies on every
-call.
+call. There is nothing to install: point your client at the endpoint and sign in
+through the browser.
 
-### OAuth 2.1 (recommended)
-
-The gateway is now an OAuth 2.1 authorization server, so most clients can connect
-with no API key at all. Point your client at the gateway URL and sign in when
-prompted:
-
-```
-https://mcp.sealgate.ai/mcp
+```text
+Endpoint:   https://mcp.sealgate.ai/mcp
+Transport:  streamable HTTP (remote, not stdio)
+Auth:       OAuth 2.1 in the browser, no key to paste
 ```
 
-The flow uses dynamic client registration (RFC 7591) and client ID metadata
-documents, mandatory PKCE (`S256`), and issues refresh tokens via the
+| Client | Add it |
+|:--|:--|
+| **Claude** | **[Add to Claude](https://claude.ai/new?modal=add-custom-connector&connectorName=SealGate&connectorUrl=https%3A%2F%2Fmcp.sealgate.ai%2Fmcp#settings/customize-connectors)** opens the *Add custom connector* dialog with the name and URL filled in. Claude flags it as suggested by an external link; that is expected. On Team and Enterprise plans an admin adds it. |
+| **ChatGPT** | Settings &rarr; Connectors &rarr; Advanced settings &rarr; turn on **Developer mode**. Back on Connectors, click **Create**, paste the endpoint, and name it. Start a new chat so the tools menu refreshes. |
+| **Claude Code** | `claude mcp add --transport http --scope user sealgate https://mcp.sealgate.ai/mcp`<br>Then run `/mcp` in a session to sign in. |
+| **Cursor** | [<picture><source media="(prefers-color-scheme: dark)" srcset="https://cursor.com/deeplink/mcp-install-light.svg"><img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Add to Cursor" height="24"></picture>](https://cursor.com/en/install-mcp?name=sealgate&config=eyJ1cmwiOiJodHRwczovL21jcC5zZWFsZ2F0ZS5haS9tY3AifQ%3D%3D)<br>Not working? Add the endpoint by hand under Settings &rarr; MCP. |
+| **VS Code** | **[Add to VS Code](https://vscode.dev/redirect/mcp/install?name=sealgate&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.sealgate.ai%2Fmcp%22%7D)** requires Copilot agent mode. |
+| **Goose** | [<img src="https://block.github.io/goose/img/extension-install-dark.svg" alt="Install in Goose" height="24">](https://block.github.io/goose/extension?url=https%3A%2F%2Fmcp.sealgate.ai%2Fmcp&type=streamable_http&id=sealgate&name=sealgate&description=SealGate+MCP+gateway&timeout=300)<br>Adds it as an extension over streamable HTTP. |
+| **Any MCP client** | Add a remote server at `https://mcp.sealgate.ai/mcp` over streamable HTTP. Cline, Zed and Windsurf all work; each spells the config differently (VS Code `servers`, Cursor and Cline `mcpServers`, Zed `context_servers`, and Windsurf wants `serverUrl` where everyone else wants `url`). |
+
+Every one-click button routes through an `https://` install URL, since GitHub
+strips custom URL schemes such as `cursor://` from links.
+
+### How OAuth works
+
+The gateway is an OAuth 2.1 authorization server, so most clients connect with no
+API key at all. The flow uses dynamic client registration (RFC 7591) and client
+ID metadata documents, mandatory PKCE (`S256`), and issues refresh tokens via the
 `offline_access` scope, so a session stays connected without re-authenticating
 every hour. Discovery, consent, and token endpoints all live on the gateway
 origin, so self-hosted single-origin deployments work with no extra
