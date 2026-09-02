@@ -121,11 +121,10 @@ failing, so registry probes and `--help` never crash.
 
 ## Install
 
-Add the server to your MCP client. It runs over stdio via `npx`.
-Also published in the official MCP Registry as `ai.sealgate/gateway` and
-`io.github.Edison-Watch/sealgate-mcp`.
-
-### Claude Desktop, Cursor
+Prefer the hosted gateway above. The npm package is the stdio alternative for
+clients that cannot use a remote server; it runs via `npx` and needs the two
+environment variables from Configuration. Also published in the official MCP
+Registry as `ai.sealgate/gateway` and `io.github.Edison-Watch/sealgate-mcp`.
 
 ```json
 {
@@ -142,25 +141,8 @@ Also published in the official MCP Registry as `ai.sealgate/gateway` and
 }
 ```
 
-### VS Code
-
-```json
-{
-    "servers": {
-        "sealgate": {
-            "type": "stdio",
-            "command": "npx",
-            "args": ["-y", "@sealgate/mcp"],
-            "env": {
-                "SEALGATE_GATEWAY_URL": "https://dashboard.sealgate.ai",
-                "SEALGATE_API_KEY": "your-sealgate-api-key"
-            }
-        }
-    }
-}
-```
-
-Copy-paste configs also live in [`examples/`](examples/).
+VS Code spells the same block as `servers` with `"type": "stdio"`. Ready-made
+files for each client live in [`examples/`](examples/).
 
 ## Usage
 
