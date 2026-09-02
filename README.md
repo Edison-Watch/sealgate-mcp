@@ -7,6 +7,7 @@
 [![MCP](https://img.shields.io/badge/protocol-MCP-blue)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/npm/v/@sealgate/mcp)](https://www.npmjs.com/package/@sealgate/mcp)
 [![smithery badge](https://smithery.ai/badge/sealgate/gateway)](https://smithery.ai/servers/sealgate/gateway)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-ai.sealgate%2Fgateway-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=sealgate)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 The Model Context Protocol (MCP) server for [Sealgate](https://sealgate.ai),
@@ -81,6 +82,31 @@ key travels in the path.
 `mcp.sealgate.ai` is the managed release host. Demo and self-hosted orgs run
 their own gateway host, so substitute your own URL where needed.
 
+## Connect your messaging apps
+
+The same gateway fronts Sealgate's messaging connectors (the Beeper desktop app
+plus the `sealgate-stdiod` tunnel), so any client above can read and send across
+your chat networks. Every message an agent reads or sends passes through the
+same policy checks and lands in the same audit log as every other tool call.
+
+| Network | Guide |
+|:--|:--|
+| <img src="https://sealgate.ai/logos/networks/whatsapp.svg" width="17" alt=""> **WhatsApp** | https://sealgate.ai/connect/whatsapp |
+| <img src="https://sealgate.ai/logos/networks/telegram.svg" width="17" alt=""> **Telegram** | https://sealgate.ai/connect/telegram |
+| <img src="https://sealgate.ai/logos/networks/imessage.svg" width="17" alt=""> **iMessage** | https://sealgate.ai/connect/imessage |
+| <img src="https://sealgate.ai/logos/networks/signal.svg" width="17" alt=""> **Signal** | https://sealgate.ai/connect/signal |
+| <img src="https://sealgate.ai/logos/networks/linkedin.svg" width="17" alt=""> **LinkedIn DMs** | https://sealgate.ai/connect/linkedin |
+| <img src="https://sealgate.ai/logos/networks/instagram.svg" width="17" alt=""> **Instagram** | https://sealgate.ai/connect/instagram |
+| <img src="https://sealgate.ai/logos/networks/messenger.svg" width="17" alt=""> **Messenger** | https://sealgate.ai/connect/messenger |
+| <img src="https://sealgate.ai/logos/networks/discord.svg" width="17" alt=""> **Discord** | https://sealgate.ai/connect/discord |
+| <img src="https://sealgate.ai/logos/networks/x.svg" width="17" alt=""> **X** | https://sealgate.ai/connect/x |
+| <img src="https://sealgate.ai/logos/networks/line.svg" width="17" alt=""> **LINE** | https://sealgate.ai/connect/line |
+| **Per-client guides** | [Codex + iMessage](https://sealgate.ai/connect/imessage/codex), [Claude + LinkedIn](https://sealgate.ai/connect/linkedin/claude), [ChatGPT + WhatsApp](https://sealgate.ai/connect/whatsapp/chatgpt), and all 100 at https://sealgate.ai/connect |
+
+Codex + iMessage in one command: the companion repo
+[Edison-Watch/codex-imessage](https://github.com/Edison-Watch/codex-imessage)
+wires Codex to iMessage through the gateway with a single install step.
+
 ## Configuration
 
 Set two environment variables, both issued or hosted by your organisation:
@@ -95,9 +121,10 @@ failing, so registry probes and `--help` never crash.
 
 ## Install
 
-Add the server to your MCP client. It runs over stdio via `npx`.
-
-### Claude Desktop, Cursor
+Prefer the hosted gateway above. The npm package is the stdio alternative for
+clients that cannot use a remote server; it runs via `npx` and needs the two
+environment variables from Configuration. Also published in the official MCP
+Registry as `ai.sealgate/gateway` and `io.github.Edison-Watch/sealgate-mcp`.
 
 ```json
 {
@@ -114,25 +141,8 @@ Add the server to your MCP client. It runs over stdio via `npx`.
 }
 ```
 
-### VS Code
-
-```json
-{
-    "servers": {
-        "sealgate": {
-            "type": "stdio",
-            "command": "npx",
-            "args": ["-y", "@sealgate/mcp"],
-            "env": {
-                "SEALGATE_GATEWAY_URL": "https://dashboard.sealgate.ai",
-                "SEALGATE_API_KEY": "your-sealgate-api-key"
-            }
-        }
-    }
-}
-```
-
-Copy-paste configs also live in [`examples/`](examples/).
+VS Code spells the same block as `servers` with `"type": "stdio"`. Ready-made
+files for each client live in [`examples/`](examples/).
 
 ## Usage
 
@@ -163,6 +173,7 @@ make ci                       # lint, typecheck, dead-code, and the rest
 
 - Website: https://sealgate.ai
 - Docs: https://docs.sealgate.ai
+- Connect guides: https://sealgate.ai/connect
 - Contact: hello@sealgate.ai
 
 ## License
