@@ -173,6 +173,7 @@ make ci                       # lint, typecheck, dead-code, and the rest
 
 - Website: https://sealgate.ai
 - Docs: https://docs.sealgate.ai
+- Developer docs, API reference, and integration guides: [SealGate developer docs](https://sealgate.ai/docs/developers)
 - Connect guides: https://sealgate.ai/connect
 - Contact: hello@sealgate.ai
 
